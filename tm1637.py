@@ -140,6 +140,6 @@ class TM1637(object):
         num2 = max(-9, min(num2, 99))
         segments = self.encode_string('{0:0>2d}{1:0>2d}'.format(num1, num2))
         # colon on
-        if colon
+        if colon:
             segments[1] |= 0x80
         self.write(segments)
