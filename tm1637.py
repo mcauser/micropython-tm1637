@@ -1,3 +1,6 @@
+# MicroPython TM1637 quad 7-segment LED display driver
+
+from machine import Pin
 from time import sleep_us
 
 _CMD_SET1 = const(64)  # 0x40 data set
@@ -18,21 +21,21 @@ class TM1637(object):
             raise ValueError("Brightness out of range")
         self._brightness = brightness
 
-        self.clk.init(clk.IN)
-        self.dio.init(dio.IN)
-        self.clk.low()
-        self.dio.low()
+        self.clk.init(Pin.IN)
+        self.dio.init(Pin.IN)
+        self.clk(0)
+        self.dio(0)
 
     def _start(self):
-        self.dio.init(self.dio.OUT)
+        self.dio.init(Pin.OUT)
         sleep_us(50)
 
     def _stop(self):
-        self.dio.init(self.dio.OUT)
+        self.dio.init(Pin.OUT)
         sleep_us(50)
-        self.clk.init(self.clk.IN)
+        self.clk.init(Pin.IN)
         sleep_us(50)
-        self.dio.init(self.dio.IN)
+        self.dio.init(Pin.IN)
         sleep_us(50)
 
     def _write_comm1(self):
@@ -48,18 +51,18 @@ class TM1637(object):
     def _write_byte(self, b):
         # send each bit
         for i in range(8):
-            self.clk.init(self.clk.OUT)
+            self.clk.init(Pin.OUT)
             sleep_us(50)
-            self.dio.init(self.dio.IN if b & 1 else self.dio.OUT)
+            self.dio.init(Pin.IN if b & 1 else Pin.OUT)
             sleep_us(50)
-            self.clk.init(self.clk.IN)
+            self.clk.init(Pin.IN)
             sleep_us(50)
             b >>= 1
-        self.clk.init(self.clk.OUT)
+        self.clk.init(Pin.OUT)
         sleep_us(50)
-        self.clk.init(self.clk.IN)
+        self.clk.init(Pin.IN)
         sleep_us(50)
-        self.clk.init(self.clk.OUT)
+        self.clk.init(Pin.OUT)
         sleep_us(50)
 
     def brightness(self, val=None):

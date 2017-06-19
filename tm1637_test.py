@@ -1,3 +1,5 @@
+# MicroPython TM1637 quad 7-segment LED display driver examples
+
 # WeMos D1 Mini -- 4 Digit Display
 # D1 (GPIO5) ----- CLK
 # D2 (GPIO4) ----- DIO
@@ -146,3 +148,6 @@ tm.numbers(-5,11)
 
 # show "12:59"
 tm.numbers(12,59)
+
+# show temperature
+tm.temperature(24)  '24*C'
