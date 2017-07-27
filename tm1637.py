@@ -1,18 +1,24 @@
-# MicroPython TM1637 quad 7-segment LED display driver
+import subprocess
+from time import time, sleep, localtime
+from wiringpi import wiringPiSetupGpio, pinMode, digitalRead, digitalWrite, GPIO
 
-from machine import Pin
-from time import sleep_us
+wiringPiSetupGpio()
 
-_CMD_SET1 = const(64)  # 0x40 data set
-_CMD_SET2 = const(192) # 0xC0 address command set
-_CMD_SET3 = const(128) # 0x80 data control command set
+_CMD_SET1 = 0x40  # 0x40 data set
+_CMD_SET2 = 0xc0 # 0xC0 address command set
+_CMD_SET3 = 0x80 # 0x80 data control command set
 
 # 0-9, a-f, blank, dash
-_SEGMENTS = [63,6,91,79,102,109,125,7,127,111,119,124,57,94,121,113,0,64]
+_SEGMENTS = (63,6,91,79,102,109,125,7,127,111,119,124,57,94,121,113,0,64)
 
 class TM1637(object):
-    """Library for the quad 7-segment LED display modules based on the TM1637
-    LED driver."""
+
+    """
+
+    Library for the quad 7-segment LED display modules based on the TM1637
+    LED driver.
+    """
+
     def __init__(self, clk, dio, brightness=7):
         self.clk = clk
         self.dio = dio
@@ -21,22 +27,22 @@ class TM1637(object):
             raise ValueError("Brightness out of range")
         self._brightness = brightness
 
-        self.clk.init(Pin.IN)
-        self.dio.init(Pin.IN)
-        self.clk(0)
-        self.dio(0)
+        pinMode(self.clk, GPIO.INPUT)
+        pinMode(self.dio, GPIO.INPUT)
+        digitalWrite(self.clk, 0)
+        digitalWrite(self.dio, 0)
 
     def _start(self):
-        self.dio.init(Pin.OUT)
-        sleep_us(50)
+        pinMode(self.dio, GPIO.OUTPUT)
+        sleep(0.00050)
 
     def _stop(self):
-        self.dio.init(Pin.OUT)
-        sleep_us(50)
-        self.clk.init(Pin.IN)
-        sleep_us(50)
-        self.dio.init(Pin.IN)
-        sleep_us(50)
+        pinMode(self.dio, GPIO.OUTPUT)
+        sleep(0.00050)
+        pinMode(self.clk, GPIO.INPUT)
+        sleep(0.00050)
+        pinMode(self.dio, GPIO.INPUT)
+        sleep(0.00050)
 
     def _write_comm1(self):
         self._start()
@@ -51,19 +57,19 @@ class TM1637(object):
     def _write_byte(self, b):
         # send each bit
         for i in range(8):
-            self.clk.init(Pin.OUT)
-            sleep_us(50)
-            self.dio.init(Pin.IN if b & 1 else Pin.OUT)
-            sleep_us(50)
-            self.clk.init(Pin.IN)
-            sleep_us(50)
+            pinMode(self.clk, GPIO.OUTPUT)
+            sleep(0.00050)
+            pinMode(self.dio, GPIO.INPUT if b & 1 else GPIO.OUTPUT)
+            sleep(0.00050)
+            pinMode(self.clk, GPIO.INPUT)
+            sleep(0.00050)
             b >>= 1
-        self.clk.init(Pin.OUT)
-        sleep_us(50)
-        self.clk.init(Pin.IN)
-        sleep_us(50)
-        self.clk.init(Pin.OUT)
-        sleep_us(50)
+        pinMode(self.clk, GPIO.OUTPUT)
+        sleep(0.00050)
+        pinMode(self.clk, GPIO.INPUT)
+        sleep(0.00050)
+        pinMode(self.clk, GPIO.OUTPUT)
+        sleep(0.00050)
 
     def brightness(self, val=None):
         """Set the display brightness 0-7."""
