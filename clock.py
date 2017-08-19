@@ -14,14 +14,14 @@ def show_clock(tm):
     sleep(.5)
     tm.numbers(t.tm_hour, t.tm_min, False)
 
-    print("\n")
-    print("============================")
-    print(" Starting clock application")
-    print("============================")
+print("\n")
+print("============================")
+print(" Starting clock application")
+print("============================")
     
-    tm = TM1637(CLK, DIO)
-    tm.brightness(1)
+tm = TM1637(CLK, DIO)
+tm.brightness(1)
     
-    while True:
-        show_clock(tm)
+while True:
+    show_clock(tm)
 
