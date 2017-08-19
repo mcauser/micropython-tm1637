@@ -9,7 +9,7 @@ _CMD_SET2 = 0xc0 # 0xC0 address command set
 _CMD_SET3 = 0x80 # 0x80 data control command set
 
 # 0-9, a-f, blank, dash
-_SEGMENTS = (63,6,91,79,102,109,125,7,127,111,119,124,57,94,121,113,0,64)
+_SEGMENTS = (63,6,91,79,102,109,125,7,127,111,119,124,57,94,121,113,0,64,99)
 
 class TM1637(object):
 
@@ -116,6 +116,9 @@ class TM1637(object):
         # space
         if o == 32:
             return _SEGMENTS[16]
+        # asterisk (grade symbol)
+        if o == 42:
+            return _SEGMENTS[18]
         # dash
         if o == 45:
             return _SEGMENTS[17]
@@ -151,4 +154,10 @@ class TM1637(object):
         # colon on
         if colon:
             segments[1] |= 0x80
+        self.write(segments)
+
+    def temperature(self, num):
+        """Display two digits temperature"""
+        num = max(-9, min(num, 99))
+        segments = self.encode_string('{0}*C'.format(num))
         self.write(segments)

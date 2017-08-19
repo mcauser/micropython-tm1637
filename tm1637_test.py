@@ -148,5 +148,6 @@ tm.numbers(-5,11)
 # show "12:59"
 tm.numbers(12,59)
 
-# show temperature
-tm.temperature(24)  '24*C'
+# show temperature "24*C"
+tm.temperature(24)  
+
