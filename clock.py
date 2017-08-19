@@ -14,7 +14,6 @@ def show_clock(tm):
     sleep(.5)
     tm.numbers(t.tm_hour, t.tm_min, False)
 
-if __name__ == "__main__":
     print("\n")
     print("============================")
     print(" Starting clock application")
