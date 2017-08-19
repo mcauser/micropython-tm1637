@@ -5,7 +5,7 @@ A Python 3 port from MicroPython library for the quad 7-segment LED display modu
 
 For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-Digit_Display/)
 
-![demo](docs/raspberry_tm1637.jpg)
+![demo](docs/raspberry_tm1637.gif)
 
 They are called 7-segment displays as there are 7 LEDs for each digit (segment).
 One byte (7 lower bits) for each segment. The 8th bit (MSB) is for the colon and only on the 2nd segment.
