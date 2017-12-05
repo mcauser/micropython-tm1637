@@ -1,11 +1,53 @@
-# TM1637
 # MicroPython TM1637
 
-A MicroPython library for the quad 7-segment LED display modules based on the TM1637 LED driver.
+A MicroPython library for quad 7-segment LED display modules using the TM1637 LED driver.
 
 For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-Digit_Display/)
 
 ![demo](docs/demo.jpg)
+
+## Examples
+
+Copy the file to your device, using ampy, webrepl or compiling and deploying. eg.
+
+```
+$ ampy put tm1637.py
+```
+
+**Basic usage**
+
+```
+import tm1637
+from machine import Pin
+tm = tm1637.TM1637(clk=Pin(5), dio=Pin(4))
+
+# all LEDS on "88:88"
+tm.write([127, 255, 127, 127])
+
+# all LEDS off
+tm.write([0, 0, 0, 0])
+
+# display "0123"
+tm.write([63, 6, 91, 79])
+
+# show "COOL"
+tm.write([0b00111001, 0b00111111, 0b00111111, 0b00111000])
+
+# display "dEAd", "bEEF"
+tm.hex(0xdead)
+tm.hex(0xbeef)
+
+# show "12:59"
+tm.numbers(12,59)
+
+# show "-123"
+tm.number(-123)
+
+# show temperature '24*C'
+tm.temperature(24)
+```
+
+For more detailed examples, see ![tm1637_test.py](tm1637_test.py)
 
 They are called 7-segment displays as there are 7 LEDs for each digit (segment).
 One byte (7 lower bits) for each segment. The 8th bit (MSB) is for the colon and only on the 2nd segment.
@@ -63,4 +105,7 @@ G             | GND
 
 * [WeMos D1 Mini](http://www.wemos.cc/Products/d1_mini.html)
 * [micropython.org](http://micropython.org)
+* [TM1637 datasheet](http://www.titanmec.com/index.php/en/project/download/id/302.html)
+* [Titan Micro TM1637 product page](http://www.titanmec.com/index.php/en/project/view/id/302.html)
 * [Nokia 5110 version](https://github.com/mcauser/MicroPython-ESP8266-Nokia-5110-Quad-7-segment)
+* [Adafruit Ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy)
