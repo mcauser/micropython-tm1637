@@ -7,7 +7,7 @@ from setuptools import setup
 setup(
     name='micropython-tm1637',
     py_modules=['tm1637'],
-    version='1.1.0',
+    version='1.2.0',
     description='MicroPython library for TM1637 LED driver.',
     long_description='This library lets you operate quad 7-segment LED display modules based on the TM1637 LED driver.',
     keywords='tm1637 seven segment led micropython',

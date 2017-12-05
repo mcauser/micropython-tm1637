@@ -39,11 +39,8 @@ tm.write([119, 124, 57, 94])
 # show "COOL"
 tm.write([0b00111001, 0b00111111, 0b00111111, 0b00111000])
 
-# all LEDs off
-tm.brightness(0)
-
 # all LEDs dim
-tm.brightness(1)
+tm.brightness(0)
 
 # all LEDs bright
 tm.brightness(7)
@@ -149,5 +146,12 @@ tm.numbers(-5,11)
 # show "12:59"
 tm.numbers(12,59)
 
-# show temperature
-tm.temperature(24)  '24*C'
+# show temperature '24*C'
+tm.temperature(24)
+
+# show temperature works for range -9 to +99
+tm.temperature(-10) # LO*C
+tm.temperature(-9)  # -9*C
+tm.temperature(5)   #  5*C
+tm.temperature(99)  # 99*C
+tm.temperature(100) # HI*C
