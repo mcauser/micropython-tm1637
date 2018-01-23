@@ -27,18 +27,21 @@ tm.write([127, 255, 127, 127])
 # all LEDS off
 tm.write([0, 0, 0, 0])
 
-# display "0123"
+# show "0123"
 tm.write([63, 6, 91, 79])
 
 # show "COOL"
 tm.write([0b00111001, 0b00111111, 0b00111111, 0b00111000])
+
+# show "HELP"
+tm.show('help')
 
 # display "dEAd", "bEEF"
 tm.hex(0xdead)
 tm.hex(0xbeef)
 
 # show "12:59"
-tm.numbers(12,59)
+tm.numbers(12, 59)
 
 # show "-123"
 tm.number(-123)
@@ -47,7 +50,9 @@ tm.number(-123)
 tm.temperature(24)
 ```
 
-For more detailed examples, see ![tm1637_test.py](tm1637_test.py)
+For more detailed examples, see [tm1637_test.py](tm1637_test.py)
+
+# Seven Segment Font
 
 They are called 7-segment displays as there are 7 LEDs for each digit (segment).
 One byte (7 lower bits) for each segment. The 8th bit (MSB) is for the colon and only on the 2nd segment.
@@ -83,8 +88,89 @@ C       | 0b00111001 | 0x39 | 57
 d       | 0b01011110 | 0x5E | 94
 E       | 0b01111001 | 0x79 | 121
 F       | 0b01110001 | 0x71 | 113
+G       | 0b00111101 | 0x3D | 61
+H       | 0b01110110 | 0x76 | 118
+I       | 0b00000110 | 0x06 | 6
+J       | 0b00011110 | 0x1E | 30
+K       | 0b01110110 | 0x76 | 118
+L       | 0b00111000 | 0x38 | 56
+M       | 0b01010101 | 0x55 | 85
+n       | 0b01010100 | 0x54 | 84
+O       | 0b00111111 | 0x3F | 63
+P       | 0b01110011 | 0x73 | 115
+q       | 0b01100111 | 0x67 | 103
+r       | 0b01010000 | 0x50 | 80
+S       | 0b01101101 | 0x6D | 109
+t       | 0b01111000 | 0x78 | 120
+U       | 0b00111110 | 0x3E | 62
+v       | 0b00011100 | 0x1C | 28
+W       | 0b00101010 | 0x2A | 42
+X       | 0b01110110 | 0x76 | 118
+y       | 0b01101110 | 0x6E | 110
+Z       | 0b01011011 | 0x5B | 91
 blank   | 0b00000000 | 0x00 | 0
-\-       | 0b01000000 | 0x40 | 64
+\-      | 0b01000000 | 0x40 | 64
+\*      | 0b01100011 | 0x63 | 99
+
+# Methods
+
+Get or set brightness.
+```
+brightness(val=None)
+```
+
+Write one or more segments at a given offset.
+```
+write(segments, pos=0)
+```
+
+Convert a single hex digit (0x00-0x0f) to a segment.
+```
+encode_digit(digit)
+```
+
+Convert a string to a list of segments.
+```
+encode_string(string)
+```
+
+Convert a single character to a segment.
+```
+encode_char(char)
+```
+
+Display a number in hexadecimal format 0000 through FFFF.
+```
+hex(val)
+```
+
+Display a number -999 through 9999, right aligned.
+```
+number(num)
+```
+
+Display 2 independent numbers on either side of the (optional) colon, with leading zeros.
+```
+numbers(num1, num2, colon=True)
+```
+
+Display a temperature -9 through 99 followed by degrees C.
+```
+temperature(num)
+```
+
+Show a string on the display.
+Shorthand for write(encode_string()).
+Limited to first 4 characters.
+```
+show(string, colon=False)
+```
+
+Display a string on the display, scrolling from the right to left, speed adjustable.
+String starts off-screen and scrolls until off-screen at 4 FPS by default.
+```
+scroll(string, delay=250)
+```
 
 ## Parts
 
@@ -103,9 +189,10 @@ G             | GND
 
 ## Links
 
-* [WeMos D1 Mini](http://www.wemos.cc/Products/d1_mini.html)
+* [WeMos D1 Mini](https://wiki.wemos.cc/products:d1:d1_mini)
 * [micropython.org](http://micropython.org)
 * [TM1637 datasheet](http://www.titanmec.com/index.php/en/project/download/id/302.html)
 * [Titan Micro TM1637 product page](http://www.titanmec.com/index.php/en/project/view/id/302.html)
 * [Nokia 5110 version](https://github.com/mcauser/MicroPython-ESP8266-Nokia-5110-Quad-7-segment)
+* [BBC micro:bit version](https://github.com/mcauser/microbit-tm1637)
 * [Adafruit Ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy)

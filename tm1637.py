@@ -2,7 +2,7 @@
 
 from micropython import const
 from machine import Pin
-from time import sleep_us
+from time import sleep_us, sleep_ms
 
 TM1637_CMD1 = const(64)  # 0x40 data command
 TM1637_CMD2 = const(192) # 0xC0 address command
@@ -10,8 +10,8 @@ TM1637_CMD3 = const(128) # 0x80 display control command
 TM1637_DSP_ON = const(8) # 0x08 display on
 TM1637_DELAY = const(10) # 10us delay between clk/dio pulses
 
-# 0-9, a-f, blank, dash
-_SEGMENTS = [63,6,91,79,102,109,125,7,127,111,119,124,57,94,121,113,0,64]
+# 0-9, a-z, blank, dash, star
+_SEGMENTS = bytearray(b'\x3F\x06\x5B\x4F\x66\x6D\x7D\x07\x7F\x6F\x77\x7C\x39\x5E\x79\x71\x3D\x76\x06\x1E\x76\x38\x55\x54\x3F\x73\x67\x50\x6D\x78\x3E\x1C\x2A\x76\x6E\x5B\x00\x40\x63')
 
 class TM1637(object):
     """Library for quad 7-segment LED modules based on the TM1637 LED driver."""
@@ -106,30 +106,27 @@ class TM1637(object):
         """Convert an up to 4 character length string containing 0-9, a-f,
         space, dash to an array of segments, matching the length of the
         source string."""
-        segments = bytearray(4)
-        for i in range(0, min(4, len(string))):
+        segments = bytearray(len(string))
+        for i in range(len(string)):
             segments[i] = self.encode_char(string[i])
         return segments
 
     def encode_char(self, char):
-        """Convert a character 0-9, a-f, space or dash to a segment."""
+        """Convert a character 0-9, a-z, space or dash to a segment."""
         o = ord(char)
-        # space
         if o == 32:
-            return _SEGMENTS[16]
-        # dash
+            return _SEGMENTS[36] # space
+        if o == 42:
+            return _SEGMENTS[38] # star/degrees
         if o == 45:
-            return _SEGMENTS[17]
-        # uppercase A-F
-        if o >= 65 and o <= 70:
-            return _SEGMENTS[o-55]
-        # lowercase a-f
-        if o >= 97 and o <= 102:
-            return _SEGMENTS[o-87]
-        # 0-9
+            return _SEGMENTS[37] # dash
+        if o >= 65 and o <= 90:
+            return _SEGMENTS[o-55] # uppercase A-Z
+        if o >= 97 and o <= 122:
+            return _SEGMENTS[o-87] # lowercase a-z
         if o >= 48 and o <= 57:
-            return _SEGMENTS[o-48]
-        raise ValueError("Character out of range")
+            return _SEGMENTS[o-48] # 0-9
+        raise ValueError("Character out of range: {:d} '{:s}'".format(o, chr(o)))
 
     def hex(self, val):
         """Display a hex value 0x0000 through 0xffff, right aligned."""
@@ -149,17 +146,30 @@ class TM1637(object):
         num1 = max(-9, min(num1, 99))
         num2 = max(-9, min(num2, 99))
         segments = self.encode_string('{0:0>2d}{1:0>2d}'.format(num1, num2))
-        # colon on
         if colon:
-            segments[1] |= 0x80
+            segments[1] |= 0x80 # colon on
         self.write(segments)
 
     def temperature(self, num):
         if num < -9:
-            self.write([0x38, 0x3F]) # LO
+            self.show('lo') # low
         elif num > 99:
-            self.write([0x76, 0x06]) # HI
+            self.show('hi') # high
         else:
             string = '{0: >2d}'.format(num)
             self.write(self.encode_string(string))
-        self.write([0x63, 0x39], 2) # degrees C
+        self.write([_SEGMENTS[38], _SEGMENTS[12]], 2) # degrees C
+
+    def show(self, string, colon=False):
+        segments = self.encode_string(string)
+        if len(segments) > 1 and colon:
+            segments[1] |= 128
+        self.write(segments[:4])
+
+    def scroll(self, string, delay=250):
+        segments = string if isinstance(string, list) else self.encode_string(string)
+        data = [0] * 8
+        data[4:0] = list(segments)
+        for i in range(len(segments) + 5):
+            self.write(data[0+i:4+i])
+            sleep_ms(delay)
