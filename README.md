@@ -196,3 +196,4 @@ G             | GND
 * [Nokia 5110 version](https://github.com/mcauser/MicroPython-ESP8266-Nokia-5110-Quad-7-segment)
 * [BBC micro:bit version](https://github.com/mcauser/microbit-tm1637)
 * [Adafruit Ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy)
+* [micropython-tm1637 on pypi](https://pypi.python.org/pypi/micropython-tm1637/)
