@@ -191,7 +191,7 @@ class TM1637Decimal(TM1637):
         the source string.
         """
 
-        segments = bytearray(len(string))
+        segments = bytearray(len(string.replace('.','')))
         j = 0
         for i in range(len(string)):
             if string[i] == '.' and j > 0:
