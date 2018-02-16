@@ -85,10 +85,10 @@ class TM1637(object):
         self._write_dsp_ctrl()
 
     def write(self, segments, pos=0):
-        """Display up to 4 segments moving right from a given position.
+        """Display up to 6 segments moving right from a given position.
         The MSB in the 2nd segment controls the colon between the 2nd
         and 3rd segments."""
-        if not 0 <= pos <= 3:
+        if not 0 <= pos <= 5:
             raise ValueError("Position out of range")
         self._write_data_cmd()
         self._start()
