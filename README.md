@@ -10,13 +10,13 @@ For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-D
 
 Copy the file to your device, using ampy, webrepl or compiling and deploying. eg.
 
-```python
+```
 $ ampy put tm1637.py
 ```
 
 **Basic usage**
 
-```
+```python
 import tm1637
 from machine import Pin
 tm = tm1637.TM1637(clk=Pin(5), dio=Pin(4))
