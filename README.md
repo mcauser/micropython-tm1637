@@ -16,7 +16,7 @@ $ ampy put tm1637.py
 
 **Basic usage**
 
-```
+```python
 import tm1637
 from machine import Pin
 tm = tm1637.TM1637(clk=Pin(5), dio=Pin(4))
@@ -115,60 +115,60 @@ blank   | 0b00000000 | 0x00 | 0
 # Methods
 
 Get or set brightness.
-```
+```python
 brightness(val=None)
 ```
 
 Write one or more segments at a given offset.
-```
+```python
 write(segments, pos=0)
 ```
 
 Convert a single hex digit (0x00-0x0f) to a segment.
-```
+```python
 encode_digit(digit)
 ```
 
 Convert a string to a list of segments.
-```
+```python
 encode_string(string)
 ```
 
 Convert a single character to a segment.
-```
+```python
 encode_char(char)
 ```
 
 Display a number in hexadecimal format 0000 through FFFF.
-```
+```python
 hex(val)
 ```
 
 Display a number -999 through 9999, right aligned.
-```
+```python
 number(num)
 ```
 
 Display 2 independent numbers on either side of the (optional) colon, with leading zeros.
-```
+```python
 numbers(num1, num2, colon=True)
 ```
 
 Display a temperature -9 through 99 followed by degrees C.
-```
+```python
 temperature(num)
 ```
 
 Show a string on the display.
 Shorthand for write(encode_string()).
 Limited to first 4 characters.
-```
+```python
 show(string, colon=False)
 ```
 
 Display a string on the display, scrolling from the right to left, speed adjustable.
 String starts off-screen and scrolls until off-screen at 4 FPS by default.
-```
+```python
 scroll(string, delay=250)
 ```
 
