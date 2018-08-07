@@ -197,3 +197,7 @@ G             | GND
 * [BBC micro:bit version](https://github.com/mcauser/microbit-tm1637)
 * [Adafruit Ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy)
 * [micropython-tm1637 on pypi](https://pypi.python.org/pypi/micropython-tm1637/)
+
+## License
+
+Licensed under the [MIT License](http://opensource.org/licenses/MIT).
