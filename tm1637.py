@@ -25,7 +25,7 @@ SOFTWARE.
 """
 
 import subprocess
-from time import time, sleep, sleep_us, sleep_ms, localtime
+from time import time, sleep, localtime
 from wiringpi import wiringPiSetupGpio, pinMode, digitalRead, digitalWrite, GPIO
 
 wiringPiSetupGpio()
@@ -38,7 +38,7 @@ TM1637_CMD1 = 0x40 # 0x40 data command
 TM1637_CMD2 = 0xc0 # 0xC0 address command
 TM1637_CMD3 = 0x80 # 0x80 display control command
 TM1637_DSP_ON = 0x08 # 0x08 display on
-TM1637_DELAY = 0xA # 10us delay between clk/dio pulses
+TM1637_DELAY = 0.00000001 # 10us delay between clk/dio pulses
 TM1637_MSB = 0x80  # msb is the decimal point or the colon depending on your display
 
 # 0-9, a-z, blank, dash, star
@@ -59,24 +59,24 @@ class TM1637(object):
         digitalWrite(self.clk, 0)
         digitalWrite(self.dio, 0)
         
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
 
         self._write_data_cmd()
         self._write_dsp_ctrl()
 
     def _start(self):
         pinMode(self.dio, GPIO.OUTPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
         pinMode(self.clk, GPIO.OUTPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
 
     def _stop(self):
         pinMode(self.dio, GPIO.OUTPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
         pinMode(self.clk, GPIO.INPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
         pinMode(self.dio, GPIO.INPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
 
     def _write_data_cmd(self):
         # automatic address increment, normal mode
@@ -93,18 +93,18 @@ class TM1637(object):
     def _write_byte(self, b):
         for i in range(8):
             pinMode(self.clk, GPIO.OUTPUT)
-            sleep_us(TM1637_DELAY)
+            sleep(TM1637_DELAY)
             pinMode(self.dio, GPIO.INPUT if b & 1 else GPIO.OUTPUT)
-            sleep_us(TM1637_DELAY)
+            sleep(TM1637_DELAY)
             pinMode(self.clk, GPIO.INPUT)
-            sleep_us(TM1637_DELAY)
+            sleep(TM1637_DELAY)
             b >>= 1
         pinMode(self.clk, GPIO.OUTPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
         pinMode(self.clk, GPIO.INPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
         pinMode(self.clk, GPIO.OUTPUT)
-        sleep_us(TM1637_DELAY)
+        sleep(TM1637_DELAY)
 
     def brightness(self, val=None):
         """Set the display brightness 0-7."""
@@ -208,7 +208,7 @@ class TM1637(object):
         data[4:0] = list(segments)
         for i in range(len(segments) + 5):
             self.write(data[0+i:4+i])
-            sleep_ms(delay)
+            sleep(delay / 1000)
 
 
 class TM1637Decimal(TM1637):
