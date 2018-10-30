@@ -30,10 +30,6 @@ from wiringpi import wiringPiSetupGpio, pinMode, digitalRead, digitalWrite, GPIO
 
 wiringPiSetupGpio()
 
-TM1637_CMD1 = 0x40  # 0x40 data set
-TM1637_CMD2 = 0xc0 # 0xC0 address command set
-TM1637_CMD3 = 0x80 # 0x80 data control command set
-
 TM1637_CMD1 = 0x40 # 0x40 data command
 TM1637_CMD2 = 0xc0 # 0xC0 address command
 TM1637_CMD3 = 0x80 # 0x80 display control command
