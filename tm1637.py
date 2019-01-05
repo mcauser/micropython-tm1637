@@ -28,7 +28,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-import subprocess
 from time import time, sleep, localtime
 from wiringpi import wiringPiSetupGpio, pinMode, digitalRead, digitalWrite, GPIO
 
@@ -54,29 +53,22 @@ class TM1637(object):
             raise ValueError("Brightness out of range")
         self._brightness = brightness
 
-        pinMode(self.clk, GPIO.INPUT)
-        pinMode(self.dio, GPIO.INPUT)
+        pinMode(self.clk, GPIO.OUTPUT)
+        pinMode(self.dio, GPIO.OUTPUT)
         digitalWrite(self.clk, 0)
         digitalWrite(self.dio, 0)
-        
-        sleep(TM1637_DELAY)
-
-        self._write_data_cmd()
-        self._write_dsp_ctrl()
 
     def _start(self):
-        pinMode(self.dio, GPIO.OUTPUT)
-        sleep(TM1637_DELAY)
-        pinMode(self.clk, GPIO.OUTPUT)
-        sleep(TM1637_DELAY)
+        digitalWrite(self.clk, GPIO.HIGH)
+        digitalWrite(self.dio, GPIO.HIGH)
+        digitalWrite(self.dio, GPIO.LOW)
+        digitalWrite(self.clk, GPIO.LOW)
 
     def _stop(self):
-        pinMode(self.dio, GPIO.OUTPUT)
-        sleep(TM1637_DELAY)
-        pinMode(self.clk, GPIO.INPUT)
-        sleep(TM1637_DELAY)
-        pinMode(self.dio, GPIO.INPUT)
-        sleep(TM1637_DELAY)
+        digitalWrite(self.clk, GPIO.LOW)
+        digitalWrite(self.dio, GPIO.LOW)
+        digitalWrite(self.clk, GPIO.HIGH)
+        digitalWrite(self.dio, GPIO.HIGH)
 
     def _write_data_cmd(self):
         # automatic address increment, normal mode
@@ -92,19 +84,24 @@ class TM1637(object):
 
     def _write_byte(self, b):
         for i in range(8):
-            pinMode(self.clk, GPIO.OUTPUT)
-            sleep(TM1637_DELAY)
-            pinMode(self.dio, GPIO.INPUT if b & 1 else GPIO.OUTPUT)
-            sleep(TM1637_DELAY)
-            pinMode(self.clk, GPIO.INPUT)
-            sleep(TM1637_DELAY)
+            digitalWrite(self.clk, GPIO.LOW)
+            digitalWrite(self.dio, GPIO.HIGH if b & 1 else GPIO.LOW)
             b >>= 1
-        pinMode(self.clk, GPIO.OUTPUT)
-        sleep(TM1637_DELAY)
-        pinMode(self.clk, GPIO.INPUT)
-        sleep(TM1637_DELAY)
-        pinMode(self.clk, GPIO.OUTPUT)
-        sleep(TM1637_DELAY)
+            digitalWrite(self.clk, GPIO.HIGH)
+
+        # wait for ACK
+        digitalWrite(self.clk, GPIO.LOW)
+        digitalWrite(self.dio, GPIO.HIGH)
+        digitalWrite(self.clk, GPIO.HIGH)
+        pinMode(self.dio, GPIO.INPUT)
+
+        while (digitalRead(self.dio)):
+            sleep(TM1637_DELAY)
+            if (digitalRead(self.dio)):
+                pinMode(self.dio, GPIO.OUTPUT)
+                digitalWrite(self.dio, GPIO.LOW)
+                pinMode(self.dio, GPIO.INPUT)
+        pinMode(self.dio, GPIO.OUTPUT)
 
     def brightness(self, val=None):
         """Set the display brightness 0-7."""
@@ -127,7 +124,6 @@ class TM1637(object):
             raise ValueError("Position out of range")
         self._write_data_cmd()
         self._start()
-
         self._write_byte(TM1637_CMD2 | pos)
         for seg in segments:
             self._write_byte(seg)
