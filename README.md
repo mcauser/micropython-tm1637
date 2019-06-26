@@ -19,8 +19,7 @@ $ ampy put tm1637.py
 
 ```python
 import tm1637
-from machine import Pin
-tm = tm1637.TM1637(clk=Pin(5), dio=Pin(4))
+tm = tm1637.TM1637(clk=5, dio=4)
 
 # all LEDS on "88:88"
 tm.write([127, 255, 127, 127])
@@ -161,7 +160,7 @@ temperature(num)
 ```
 
 Show a string on the display.
-Shorthand for write(encode_string()).
+Shorthand for `write(encode_string())`.
 Limited to first 4 characters.
 ```python
 show(string, colon=False)
