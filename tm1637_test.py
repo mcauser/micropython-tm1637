@@ -47,11 +47,11 @@ tm.write([6, 91], 1) # _12_
 tm.write([111], 3) # ___9
 
 # walk through all possible LED combinations
-from time import sleep_ms
+from time import sleep
 for i in range(128):
     tm.number(i)
     tm.write([i])
-    sleep_ms(100)
+    sleep(0.1)
 
 # show "AbCd"
 tm.write([119, 124, 57, 94])
