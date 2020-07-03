@@ -7,6 +7,14 @@ For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-D
 
 ![demo](docs/raspberry_tm1637.gif)
 
+## Installation
+
+This project is available through [pip](https://www.w3schools.com/python/python_pip.asp). Make sure that you are using Python 3.
+
+```
+$ pip3 install raspberrypi-python-tm1637
+```
+
 ## Examples
 
 **Basic usage**
