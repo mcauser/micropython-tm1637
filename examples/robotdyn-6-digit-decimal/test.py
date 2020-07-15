@@ -16,8 +16,8 @@
 
 import tm1637
 
-CLK=1
-DIO=0
+CLK = 1
+DIO = 0
 
 tm = tm1637.TM1637(clk=CLK, dio=DIO)
 
@@ -26,10 +26,10 @@ tm.brightness(0)
 
 # expected: 012345
 # actual:   210543
-tm.write([0x3F,0x06,0x5B,0x4F,0x66,0x6D])
+tm.write([0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D])
 
 # data = 012345
-data = [0x3F,0x06,0x5B,0x4F,0x66,0x6D]
+data = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D]
 # expected: 012345
 # actual:   012345
 tm.write([data[2], data[1], data[0], data[5], data[4], data[3]])
@@ -38,18 +38,20 @@ tm.write([data[2], data[1], data[0], data[5], data[4], data[3]])
 # actual:   cbafed
 tm.show('abcdef')
 
+
 # swap segments 0,2 and segments 3,5
 def swap(segs):
-	length = len(segs)
-	if length == 4 or length == 5:
-		segs.extend(bytearray([0] * (6 - length)))
-	segs[0], segs[2] = segs[2], segs[0]
-	if length >= 4:
-		segs[3], segs[5] = segs[5], segs[3]
-	return segs
+    length = len(segs)
+    if length == 4 or length == 5:
+        segs.extend(bytearray([0] * (6 - length)))
+    segs[0], segs[2] = segs[2], segs[0]
+    if length >= 4:
+        segs[3], segs[5] = segs[5], segs[3]
+    return segs
+
 
 # data = 012345
-data = [0x3F,0x06,0x5B,0x4F,0x66,0x6D]
+data = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D]
 # expected: 012345
 # actual:   012345
 tm.write(swap(data))

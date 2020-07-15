@@ -11,8 +11,8 @@
 
 import tm1637
 
-CLK=1
-DIO=0
+CLK = 1
+DIO = 0
 
 tm = tm1637.TM1637(clk=CLK, dio=DIO)
 
