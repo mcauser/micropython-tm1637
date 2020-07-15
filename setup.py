@@ -9,7 +9,7 @@ sys.path.pop(0)
 setup(
     name='raspberrypi-python-tm1637',
     py_modules=['tm1637'],
-    version='1.3.0',
+    version='1.3.1',
     description='Raspberry Pi Python port from MicroPython library for TM1637 LED driver.',
     long_description='This library lets you operate quad 7-segment LED display modules based on the TM1637 LED driver '
                      'with Raspberry PI.',
