@@ -5,7 +5,7 @@ A Python 3 port from MicroPython library for the quad 7-segment LED display modu
 
 For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-Digit_Display/)
 
-![demo](docs/raspberry_tm1637.gif)
+![demo](https://github.com/depklyon/raspberrypi-tm1637/raw/master/docs/raspberry_tm1637.gif)
 
 ## Examples
 

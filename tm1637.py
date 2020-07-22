@@ -4,7 +4,7 @@ MicroPython TM1637 quad 7-segment LED display driver
 https://github.com/mcauser/micropython-tm1637
 
 Python3 Port
-https://github.com/depklyon/raspberrypi-python-tm1637
+https://github.com/depklyon/raspberrypi-tm1637
 
 MIT License
 Copyright (c) 2016-2018 Mike Causer
