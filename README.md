@@ -44,7 +44,7 @@ tm.number(-123)
 tm.temperature(24)
 ```
 
-For more detailed examples, see [tm1637_test.py](tm1637_test.py)
+For more detailed examples, see [demo.py](https://github.com/depklyon/raspberrypi-tm1637/blob/master/demo.py)
 
 # Seven Segment Font
 
