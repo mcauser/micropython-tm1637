@@ -216,12 +216,13 @@ class TM1637(object):
                 if intval < 10 and num > 0: # single digit positive
                     seg1 = 0b00000000
                     seg2 = self.encode_digit(intval)
+                elif num < 0: # negative
+                    seg1 = 0b01000000 # '-'
+                    seg2 = self.encode_digit(intval)
                 else: # two digit (can only be positive)
                     seg1 = self.encode_digit(int(intval/10))
                     seg2 = self.encode_digit(int(num-(int(intval/10)*10)))
-                if num < 0: # negative
-                    seg1 = 0b01000000 # '-'
-                    seg2 = self.encode_digit(intval)
+
                 try:
                     seg3 = self.encode_digit(int(str(num).split('.')[1][0])) # will fail if there is no decimal point
                 except:
