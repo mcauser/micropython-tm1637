@@ -89,24 +89,18 @@ class TM1637(object):
 
     def _write_byte(self, b):
         for i in range(8):
-            digitalWrite(self.clk, GPIO.LOW)
-            digitalWrite(self.dio, GPIO.HIGH if b & 1 else GPIO.LOW)
-            b >>= 1
-            digitalWrite(self.clk, GPIO.HIGH)
-
-        # wait for ACK
-        digitalWrite(self.clk, GPIO.LOW)
-        digitalWrite(self.dio, GPIO.HIGH)
-        digitalWrite(self.clk, GPIO.HIGH)
-        pinMode(self.dio, GPIO.INPUT)
-
-        while digitalRead(self.dio):
+            digitalWrite(self.dio,(b >> i) & 1)
             sleep(TM1637_DELAY)
-            if digitalRead(self.dio):
-                pinMode(self.dio, GPIO.OUTPUT)
-                digitalWrite(self.dio, GPIO.LOW)
-                pinMode(self.dio, GPIO.INPUT)
-        pinMode(self.dio, GPIO.OUTPUT)
+            digitalWrite(self.clk, GPIO.HIGH)
+            sleep(TM1637_DELAY)
+            digitalWrite(self.clk, GPIO.LOW)
+            sleep(TM1637_DELAY)
+
+        digitalWrite(self.clk, GPIO.LOW)
+        sleep(TM1637_DELAY)
+        digitalWrite(self.clk, GPIO.HIGH)
+        sleep(TM1637_DELAY)
+        digitalWrite(self.clk, GPIO.LOW)
 
     def brightness(self, val=None):
         """Set the display brightness 0-7."""
