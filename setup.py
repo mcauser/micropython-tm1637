@@ -12,7 +12,7 @@ with open("README.md", "r") as fh:
 setup(
     name='raspberrypi-tm1637',
     py_modules=['tm1637'],
-    version='1.3.6',
+    version='1.3.7',
     description='Raspberry Pi Python port from MicroPython library for TM1637 LED driver.',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -29,5 +29,5 @@ setup(
         'License :: OSI Approved :: MIT License',
     ],
     python_requires='>=3',
-    install_requires=['wiringpi']
+    install_requires=['RPi.GPIO']
 )
