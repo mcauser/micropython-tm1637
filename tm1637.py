@@ -30,9 +30,10 @@ SOFTWARE.
 
 from time import sleep
 
-from wiringpi import wiringPiSetupGpio, pinMode, digitalRead, digitalWrite, GPIO
+import RPi.GPIO as GPIO
 
-wiringPiSetupGpio()
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
 TM1637_CMD1 = 0x40  # 0x40 data command
 TM1637_CMD2 = 0xc0  # 0xC0 address command
@@ -58,22 +59,24 @@ class TM1637(object):
             raise ValueError("Brightness out of range")
         self._brightness = brightness
 
-        pinMode(self.clk, GPIO.OUTPUT)
-        pinMode(self.dio, GPIO.OUTPUT)
-        digitalWrite(self.clk, 0)
-        digitalWrite(self.dio, 0)
+        GPIO.setup(self.clk, GPIO.OUT, initial=GPIO.LOW)
+        GPIO.setup(self.dio, GPIO.OUT, initial=GPIO.LOW)
+
+    def __del__(self):
+        GPIO.cleanup(self.clk)
+        GPIO.cleanup(self.dio)
 
     def _start(self):
-        digitalWrite(self.clk, GPIO.HIGH)
-        digitalWrite(self.dio, GPIO.HIGH)
-        digitalWrite(self.dio, GPIO.LOW)
-        digitalWrite(self.clk, GPIO.LOW)
+        GPIO.output(self.clk, GPIO.HIGH)
+        GPIO.output(self.dio, GPIO.HIGH)
+        GPIO.output(self.dio, GPIO.LOW)
+        GPIO.output(self.clk, GPIO.LOW)
 
     def _stop(self):
-        digitalWrite(self.clk, GPIO.LOW)
-        digitalWrite(self.dio, GPIO.LOW)
-        digitalWrite(self.clk, GPIO.HIGH)
-        digitalWrite(self.dio, GPIO.HIGH)
+        GPIO.output(self.clk, GPIO.LOW)
+        GPIO.output(self.dio, GPIO.LOW)
+        GPIO.output(self.clk, GPIO.HIGH)
+        GPIO.output(self.dio, GPIO.HIGH)
 
     def _write_data_cmd(self):
         # automatic address increment, normal mode
@@ -89,18 +92,18 @@ class TM1637(object):
 
     def _write_byte(self, b):
         for i in range(8):
-            digitalWrite(self.dio,(b >> i) & 1)
+            GPIO.output(self.dio,(b >> i) & 1)
             sleep(TM1637_DELAY)
-            digitalWrite(self.clk, GPIO.HIGH)
+            GPIO.output(self.clk, GPIO.HIGH)
             sleep(TM1637_DELAY)
-            digitalWrite(self.clk, GPIO.LOW)
+            GPIO.output(self.clk, GPIO.LOW)
             sleep(TM1637_DELAY)
 
-        digitalWrite(self.clk, GPIO.LOW)
+        GPIO.output(self.clk, GPIO.LOW)
         sleep(TM1637_DELAY)
-        digitalWrite(self.clk, GPIO.HIGH)
+        GPIO.output(self.clk, GPIO.HIGH)
         sleep(TM1637_DELAY)
-        digitalWrite(self.clk, GPIO.LOW)
+        GPIO.output(self.clk, GPIO.LOW)
 
     def brightness(self, val=None):
         """Set the display brightness 0-7."""
