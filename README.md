@@ -1,25 +1,27 @@
-# MicroPython TM1637
+# TM1637
+# Raspberry Pi Python 3 TM1637
 
-A MicroPython library for quad 7-segment LED display modules using the TM1637 LED driver.
+A Python 3 port from MicroPython library for the quad 7-segment LED display modules based on the TM1637 LED driver, implemented on Raspberry Pi.
 
 For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-Digit_Display/)
 
-![demo](docs/demo.jpg)
+![demo](https://github.com/depklyon/raspberrypi-tm1637/raw/master/docs/raspberry_tm1637.gif)
+
+## Installation
+
+This project is available through [pip](https://www.w3schools.com/python/python_pip.asp). Make sure that you are using Python 3.
+
+```
+$ pip3 install raspberrypi-tm1637
+```
 
 ## Examples
-
-Copy the file to your device, using ampy, webrepl or compiling and deploying. eg.
-
-```
-$ ampy put tm1637.py
-```
 
 **Basic usage**
 
 ```python
 import tm1637
-from machine import Pin
-tm = tm1637.TM1637(clk=Pin(5), dio=Pin(4))
+tm = tm1637.TM1637(clk=5, dio=4)
 
 # all LEDS on "88:88"
 tm.write([127, 255, 127, 127])
@@ -50,7 +52,7 @@ tm.number(-123)
 tm.temperature(24)
 ```
 
-For more detailed examples, see [tm1637_test.py](tm1637_test.py)
+For more detailed examples, see [demo.py](https://github.com/depklyon/raspberrypi-tm1637/blob/master/demo.py)
 
 # Seven Segment Font
 
@@ -160,7 +162,7 @@ temperature(num)
 ```
 
 Show a string on the display.
-Shorthand for write(encode_string()).
+Shorthand for `write(encode_string())`.
 Limited to first 4 characters.
 ```python
 show(string, colon=False)
@@ -174,29 +176,23 @@ scroll(string, delay=250)
 
 ## Parts
 
-* [WeMos D1 Mini](https://www.aliexpress.com/store/product/D1-mini-Mini-NodeMcu-4M-bytes-Lua-WIFI-Internet-of-Things-development-board-based-ESP8266/1331105_32529101036.html) $4.00 USD
 * [Grove 4 Digit Display](https://www.seeedstudio.com/grove-4digital-display-p-1198.html) $5.90 USD
 * [Grove Male Jumper Cable](https://www.seeedstudio.com/Grove-4-pin-Male-Jumper-to-Grove-4-pin-Conversion-Cable-%285-PCs-per-Pack%29-p-1565.html) $2.90 USD
 
 ## Connections
 
-WeMos D1 Mini | 4 Digit Display
+Raspberry Pi  | 4 Digit Display
 ------------- | ---------------
-D1 (GPIO5)    | CLK
-D2 (GPIO4)    | DIO
+GPIO5         | CLK
+GPIO4         | DIO
 3V3 (or 5V)   | VCC
-G             | GND
+GND           | GND
 
 ## Links
 
-* [WeMos D1 Mini](https://wiki.wemos.cc/products:d1:d1_mini)
-* [micropython.org](http://micropython.org)
 * [TM1637 datasheet](http://www.titanmec.com/index.php/en/project/download/id/302.html)
-* [Titan Micro TM1637 product page](http://www.titanmec.com/index.php/en/project/view/id/302.html)
 * [Nokia 5110 version](https://github.com/mcauser/MicroPython-ESP8266-Nokia-5110-Quad-7-segment)
 * [BBC micro:bit version](https://github.com/mcauser/microbit-tm1637)
-* [Adafruit Ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy)
-* [micropython-tm1637 on pypi](https://pypi.python.org/pypi/micropython-tm1637/)
 
 ## License
 

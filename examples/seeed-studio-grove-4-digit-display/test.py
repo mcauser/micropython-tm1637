@@ -10,8 +10,11 @@
 # this module has a 4-digit 7-segment display with two dots between the 2nd and 3rd segments, referred to as the colon
 
 import tm1637
-from machine import Pin
-tm = tm1637.TM1637(clk=Pin(2), dio=Pin(0))
+
+CLK = 1
+DIO = 0
+
+tm = tm1637.TM1637(clk=CLK, dio=DIO)
 
 # dim
 tm.brightness(0)

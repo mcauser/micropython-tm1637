@@ -1,0 +1,7 @@
+*.swp
+__pycache__
+/.idea/
+/venv/
+/build/
+/dist/
+/raspberrypi_tm1637.egg-info/

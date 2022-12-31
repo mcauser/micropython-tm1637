@@ -13,8 +13,11 @@
 # grid5 and grid6 are not connected
 
 import tm1637
-from machine import Pin
-tm = tm1637.TM1637(clk=Pin(2), dio=Pin(0))
+
+CLK = 1
+DIO = 0
+
+tm = tm1637.TM1637(clk=CLK, dio=DIO)
 
 # dim
 tm.brightness(0)
