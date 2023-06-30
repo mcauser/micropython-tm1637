@@ -2,17 +2,28 @@
 
 A MicroPython library for quad 7-segment LED display modules using the TM1637 LED driver.
 
-For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-Digit_Display/)
-
 ![demo](docs/demo.jpg)
 
+### Installation
+
+Using mip via mpremote:
+
+```bash
+$ mpremote mip install github:mcauser/micropython-tm1637
+```
+
+Using mip directly on a WiFi capable board:
+
+```python
+>>> import mip
+>>> mip.install("github:mcauser/micropython-tm1637")
+```
+
+Manual installation:
+
+Copy `tm1637.py` to the root directory of your device.
+
 ## Examples
-
-Copy the file to your device, using ampy, webrepl or compiling and deploying. eg.
-
-```
-$ ampy put tm1637.py
-```
 
 **Basic usage**
 
@@ -172,31 +183,33 @@ String starts off-screen and scrolls until off-screen at 4 FPS by default.
 scroll(string, delay=250)
 ```
 
-## Parts
+## Modules
 
-* [WeMos D1 Mini](https://www.aliexpress.com/store/product/D1-mini-Mini-NodeMcu-4M-bytes-Lua-WIFI-Internet-of-Things-development-board-based-ESP8266/1331105_32529101036.html) $4.00 USD
-* [Grove 4 Digit Display](https://www.seeedstudio.com/grove-4digital-display-p-1198.html) $5.90 USD
-* [Grove Male Jumper Cable](https://www.seeedstudio.com/Grove-4-pin-Male-Jumper-to-Grove-4-pin-Conversion-Cable-%285-PCs-per-Pack%29-p-1565.html) $2.90 USD
+* [Grove 4 Digit Display](https://www.seeedstudio.com/Grove-4-Digit-Display.html)
+* [RobotDyn 4-digit LED Display Tube](https://www.aliexpress.com/item/32795908218.html)
+* [RobotDyn 6-digit LED Display Tube](https://www.aliexpress.com/item/32800127265.html)
+* [Generic TM1637 LED Display Module](https://www.aliexpress.com/item/32657932650.html)
+
+For example, the [Grove - 4 Digit Display module](http://wiki.seeed.cc/Grove-4-Digit_Display/)
 
 ## Connections
 
-WeMos D1 Mini | 4 Digit Display
-------------- | ---------------
-D1 (GPIO5)    | CLK
-D2 (GPIO4)    | DIO
-3V3 (or 5V)   | VCC
-G             | GND
+`CLK` and `DIO` are bit-banged. You can use any GPIO.
+
+4 Digit Display | TinyPICO | Pi Pico | WeMos D1 Mini
+--------------- | ---------| ------- | -------------
+CLK             | IO18     | IO27    | D1 (GPIO5)
+DIO             | IO23     | IO26    | D2 (GPIO4)
+VCC             | 3V3      | 3V3     | 3V3/5V
+GND             | GND      | GND     | G
 
 ## Links
 
-* [WeMos D1 Mini](https://wiki.wemos.cc/products:d1:d1_mini)
 * [micropython.org](http://micropython.org)
 * [TM1637 datasheet](http://www.titanmec.com/index.php/en/project/download/id/302.html)
 * [Titan Micro TM1637 product page](http://www.titanmec.com/index.php/en/project/view/id/302.html)
 * [Nokia 5110 version](https://github.com/mcauser/MicroPython-ESP8266-Nokia-5110-Quad-7-segment)
 * [BBC micro:bit version](https://github.com/mcauser/microbit-tm1637)
-* [Adafruit Ampy](https://learn.adafruit.com/micropython-basics-load-files-and-run-code/install-ampy)
-* [micropython-tm1637 on pypi](https://pypi.python.org/pypi/micropython-tm1637/)
 
 ## License
 

@@ -3,7 +3,7 @@ MicroPython TM1637 quad 7-segment LED display driver
 https://github.com/mcauser/micropython-tm1637
 
 MIT License
-Copyright (c) 2016 Mike Causer
+Copyright (c) 2016-2023 Mike Causer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+
+__version__ = '1.3.0'
 
 from micropython import const
 from machine import Pin
