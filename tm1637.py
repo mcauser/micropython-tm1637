@@ -161,7 +161,7 @@ class TM1637(object):
         self.write(self.encode_string(string))
 
     def number(self, num, zeros=False):
-        """Display a numeric value -999 through 9999, right aligned or with leading ceros"""
+        """Display a numeric value -999 through 9999, right aligned or with leading zeros"""
         # limit to range -999 to 9999
         num = max(-999, min(num, 9999))
         if zeros:
