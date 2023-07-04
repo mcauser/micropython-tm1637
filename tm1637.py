@@ -160,11 +160,11 @@ class TM1637(object):
         string = '{:04x}'.format(val & 0xffff)
         self.write(self.encode_string(string))
 
-    def number(self, num, ceros=False):
+    def number(self, num, zeros=False):
         """Display a numeric value -999 through 9999, right aligned or with leading ceros"""
         # limit to range -999 to 9999
         num = max(-999, min(num, 9999))
-        if ceros:
+        if zeros:
             string = "{:04d}".format(num)
         else:
             string = '{0:>4d}'.format(num)
